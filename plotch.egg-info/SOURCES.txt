@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+setup.py
+plotch/__init__.py
+plotch/main.py
+plotch.egg-info/PKG-INFO
+plotch.egg-info/SOURCES.txt
+plotch.egg-info/dependency_links.txt
+plotch.egg-info/requires.txt
+plotch.egg-info/top_level.txt

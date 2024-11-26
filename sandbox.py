@@ -1,8 +1,3 @@
-# Plotch: patchwork for matplotlib
-
-## Quick start
-
-```python
 import matplotlib.pyplot as plt
 import plotch
 
@@ -22,7 +17,4 @@ ax3.bar(["Jo", "Mat", "Lo"], [1, 2, 3])
 fig = plt.gcf()
 fig.set_facecolor("#c8bdbd")
 
-plt.show()
-```
-
-![](img/quickstart.png)
+plt.savefig("img/quickstart.png", dpi=300)

@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: plotch
+Version: 0.0.0.9
+Summary: Patchwork for matplotlib
+Home-page: https://github.com/JosephBARBIERDARNAL/plotch/blob/main/README.md
+Author: Joseph Barbier
+Author-email: Joseph Barbier <joseph.barbierdarnal@gmail.com>
+Project-URL: Homepage, https://github.com/JosephBARBIERDARNAL/plotch
+Project-URL: Issues, https://github.com/JosephBARBIERDARNAL/plotch/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Framework :: Matplotlib
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib
+
+# plotch
