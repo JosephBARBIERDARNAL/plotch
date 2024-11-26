@@ -2,12 +2,21 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 
 
+def _copy_figure_properties(source_fig, target_fig):
+    target_fig.set_facecolor(source_fig.get_facecolor())
+    target_fig.set_edgecolor(source_fig.get_edgecolor())
+    target_fig.set_dpi(source_fig.get_dpi())
+
+
 def _add_axes(self, other):
-    """Horizontal composition of two axes"""
     if not isinstance(other, Axes):
         return NotImplemented
 
-    fig = plt.figure(figsize=(12, 5))
+    self.figure.set_facecolor(plt.gcf().get_facecolor())
+    other.figure.set_facecolor(plt.gcf().get_facecolor())
+
+    fig = plt.figure(figsize=(12, 7))
+    _copy_figure_properties(self.figure, fig)
 
     ax1 = fig.add_subplot(121)
     ax2 = fig.add_subplot(122)
@@ -15,26 +24,24 @@ def _add_axes(self, other):
     self.figure.canvas.draw()
     other.figure.canvas.draw()
 
-    ax1.imshow(self.figure.canvas.renderer.buffer_rgba())
-    ax2.imshow(other.figure.canvas.renderer.buffer_rgba())
+    ax1.imshow(self.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
+    ax2.imshow(other.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
 
     for ax in [ax1, ax2]:
-        ax.set_xticks([])
-        ax.set_yticks([])
-        for spine in ax.spines.values():
-            spine.set_visible(False)
+        ax.axis("off")
 
     plt.tight_layout()
-
     return ax1
 
 
 def _divide_axes(self, other):
-    """Vertical composition of two axes"""
     if not isinstance(other, Axes):
         return NotImplemented
 
-    fig = plt.figure(figsize=(6, 6))
+    self.figure.set_facecolor(plt.gcf().get_facecolor())
+    other.figure.set_facecolor(plt.gcf().get_facecolor())
+
+    fig = plt.figure(figsize=(7, 10))
 
     ax1 = fig.add_subplot(211)
     ax2 = fig.add_subplot(212)
@@ -42,15 +49,32 @@ def _divide_axes(self, other):
     self.figure.canvas.draw()
     other.figure.canvas.draw()
 
-    ax1.imshow(self.figure.canvas.renderer.buffer_rgba())
-    ax2.imshow(other.figure.canvas.renderer.buffer_rgba())
+    ax1.imshow(self.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
+    ax2.imshow(other.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
 
     for ax in [ax1, ax2]:
-        ax.set_xticks([])
-        ax.set_yticks([])
-        for spine in ax.spines.values():
-            spine.set_visible(False)
+        ax.axis("off")
 
     plt.tight_layout()
-
     return ax1
+
+
+if __name__ == "main":
+    import matplotlib.pyplot as plt
+
+    _, ax1 = plt.subplots()
+    ax1.set_facecolor("#fb4040")
+    ax1.plot([1, 2, 3], [1, 2, 3])
+
+    _, ax2 = plt.subplots()
+    ax2.scatter([1, 2, 3], [3, 2, 1])
+
+    _, ax3 = plt.subplots()
+    ax3.bar(["Jo", "Mat", "Lo"], [1, 2, 3])
+
+    (ax1 + ax2) / ax3
+
+    fig = plt.gcf()
+
+    fig.text(0.5, 0.5, "heyyyy", size=20)
+    fig.set_facecolor("#62be17")
