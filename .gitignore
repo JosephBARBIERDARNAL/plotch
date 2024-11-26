@@ -2,5 +2,5 @@ env/
 venv/
 .vscode/
 .DS_Store
-pltch.egg-info
+plotch.egg-info/
 *cache*/
