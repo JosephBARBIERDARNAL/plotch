@@ -30,7 +30,7 @@ def _add_axes(self, other):
     for ax in [ax1, ax2]:
         ax.axis("off")
 
-    plt.tight_layout()
+    fig.tight_layout()
     return ax1
 
 
@@ -42,6 +42,7 @@ def _divide_axes(self, other):
     other.figure.set_facecolor(plt.gcf().get_facecolor())
 
     fig = plt.figure(figsize=(7, 10))
+    _copy_figure_properties(self.figure, fig)
 
     ax1 = fig.add_subplot(211)
     ax2 = fig.add_subplot(212)
@@ -55,26 +56,27 @@ def _divide_axes(self, other):
     for ax in [ax1, ax2]:
         ax.axis("off")
 
-    plt.tight_layout()
+    fig.tight_layout()
     return ax1
 
 
-if __name__ == "main":
-    import matplotlib.pyplot as plt
+if __name__ == "__main__":
+    from matplotlib.axes import Axes
 
-    _, ax1 = plt.subplots()
+    Axes.__add__ = _add_axes
+    Axes.__truediv__ = _divide_axes
+
+    _, ax1 = plt.subplots(dpi=300)
     ax1.set_facecolor("#fb4040")
     ax1.plot([1, 2, 3], [1, 2, 3])
 
-    _, ax2 = plt.subplots()
+    _, ax2 = plt.subplots(dpi=300)
     ax2.scatter([1, 2, 3], [3, 2, 1])
 
-    _, ax3 = plt.subplots()
+    _, ax3 = plt.subplots(dpi=300)
     ax3.bar(["Jo", "Mat", "Lo"], [1, 2, 3])
 
     (ax1 + ax2) / ax3
 
     fig = plt.gcf()
-
-    fig.text(0.5, 0.5, "heyyyy", size=20)
-    fig.set_facecolor("#62be17")
+    fig.savefig("test.png", dpi=300)
