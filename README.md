@@ -1,6 +1,6 @@
-# Plotch: patchwork for matplotlib
+# Plotch: gluing plots in matplotlib
 
-This project is a work in progress.
+This project is still under development, but if you have any ideas, advice or would like to contribute, please don't hesitate to contact me!
 
 <br>
 
