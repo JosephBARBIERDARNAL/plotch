@@ -30,3 +30,6 @@ plt.gcf().savefig("img/example-2.png")
 
 (ax1 + ax2) / ax2
 plt.gcf().savefig("img/example-3.png")
+
+ax2 / (ax1 + ax2)
+plt.gcf().savefig("img/example-4.png")

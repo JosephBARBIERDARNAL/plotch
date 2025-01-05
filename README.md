@@ -13,7 +13,6 @@ import plotch
 df = pd.DataFrame({
    "x": [10, 34, 71, 42, 82],
    "y": [1, 2, 3, 4, 5],
-   "labels": ["A", "B", "C", "D", "E"],
 })
 
 _, ax1 = plt.subplots(figsize=(5, 5))
@@ -42,3 +41,23 @@ ax1 + ax2
 ```
 
 ![](img/example-3.png)
+
+```python
+ax2 / (ax1 + ax2)
+```
+
+![](img/example-4.png)
+
+<br/><br/><br/>
+
+## Current progress
+
+### Capabilities
+
+- The `+` and `/` operators are "easy" to make usable
+- Charts looks okay with 2 or 3 Axes
+
+### Limitations
+
+- Scales very badly with 3 or more Axes
+- Having to call `plt.subplots()` many times is not the best
