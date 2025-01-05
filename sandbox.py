@@ -1,21 +1,32 @@
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import plotch
 
+np.random.seed(0)
 
-_, ax1 = plt.subplots(dpi=300)
-ax1.set_facecolor("#fb4040")
-ax1.plot([1, 2, 3], [1, 2, 3])
+plt.rcParams["figure.dpi"] = 300
+plt.rcParams["savefig.dpi"] = 300
 
-_, ax2 = plt.subplots(dpi=300)
-ax2.scatter([1, 2, 3], [3, 2, 1])
+df = pd.DataFrame(
+    {
+        "x": [10, 34, 71, 42, 82],
+        "y": [1, 2, 3, 4, 5],
+        "labels": ["A", "B", "C", "D", "E"],
+    }
+)
 
-_, ax3 = plt.subplots(dpi=300)
-ax3.bar(["Jo", "Mat", "Lo"], [1, 2, 3])
+_, ax1 = plt.subplots(figsize=(5, 5))
+ax1.scatter(df["x"], df["y"])
 
+_, ax2 = plt.subplots(figsize=(5, 5))
+ax2.bar(df["y"], df["x"])
 
-(ax1 + ax2) / ax3
+ax1 / ax2
+plt.gcf().savefig("img/example-1.png")
 
-fig = plt.gcf()
-fig.text(0.5, 0.5, "heyyyy", size=20)
+ax1 + ax2
+plt.gcf().savefig("img/example-2.png")
 
-plt.savefig("img/quickstart.png", dpi=300)
+(ax1 + ax2) / ax2
+plt.gcf().savefig("img/example-3.png")

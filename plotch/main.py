@@ -2,81 +2,90 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 
 
-def _copy_figure_properties(source_fig, target_fig):
-    target_fig.set_facecolor(source_fig.get_facecolor())
-    target_fig.set_edgecolor(source_fig.get_edgecolor())
-    target_fig.set_dpi(source_fig.get_dpi())
+def _fig2rgb_array(fig):
+    fig.canvas.draw()
+    buf = fig.canvas.renderer.buffer_rgba()
+    return buf
 
 
 def _add_axes(self, other):
     if not isinstance(other, Axes):
-        return NotImplemented
+        return NotImplementedError
 
     self.figure.set_facecolor(plt.gcf().get_facecolor())
     other.figure.set_facecolor(plt.gcf().get_facecolor())
 
-    fig = plt.figure(figsize=(12, 7))
-    _copy_figure_properties(self.figure, fig)
+    fig = plt.figure(figsize=(10, 6))
 
-    ax1 = fig.add_subplot(121)
-    ax2 = fig.add_subplot(122)
+    ax_left = fig.add_axes([0.0, 0.0, 0.5, 1.0])
+    ax_right = fig.add_axes([0.5, 0.0, 0.5, 1.0])
+    ax_left.axis("off")
+    ax_right.axis("off")
 
     self.figure.canvas.draw()
     other.figure.canvas.draw()
 
-    ax1.imshow(self.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
-    ax2.imshow(other.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
+    ax_left.imshow(_fig2rgb_array(self.get_figure()))
+    ax_right.imshow(_fig2rgb_array(other.get_figure()))
 
-    for ax in [ax1, ax2]:
-        ax.axis("off")
-
-    fig.tight_layout()
-    return ax1
+    return ax_left
 
 
-def _divide_axes(self, other):
+def _truediv_axes(self, other):
+    """
+    Defines what happens when we do: ax1 / ax2.
+    Places them in a new figure, stacked vertically (top and bottom).
+    """
     if not isinstance(other, Axes):
-        return NotImplemented
+        return NotImplementedError
 
     self.figure.set_facecolor(plt.gcf().get_facecolor())
     other.figure.set_facecolor(plt.gcf().get_facecolor())
 
-    fig = plt.figure(figsize=(7, 10))
-    _copy_figure_properties(self.figure, fig)
+    fig = plt.figure(figsize=(8, 10))
 
-    ax1 = fig.add_subplot(211)
-    ax2 = fig.add_subplot(212)
+    ax_top = fig.add_axes([0.0, 0.5, 1.0, 0.5])
+    ax_bottom = fig.add_axes([0.0, 0.0, 1.0, 0.5])
+    ax_top.axis("off")
+    ax_bottom.axis("off")
 
     self.figure.canvas.draw()
     other.figure.canvas.draw()
 
-    ax1.imshow(self.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
-    ax2.imshow(other.figure.canvas.renderer.buffer_rgba(), interpolation="nearest")
+    ax_top.imshow(_fig2rgb_array(self.figure))
+    ax_bottom.imshow(_fig2rgb_array(other.figure))
 
-    for ax in [ax1, ax2]:
-        ax.axis("off")
-
-    fig.tight_layout()
-    return ax1
+    return ax_top
 
 
 if __name__ == "__main__":
     from matplotlib.axes import Axes
 
-    Axes.__add__ = _add_axes
-    Axes.__truediv__ = _divide_axes
+    plt.style.use("dark_background")
 
-    _, ax1 = plt.subplots(dpi=300)
+    plt.rcParams["figure.dpi"] = 300
+    plt.rcParams["savefig.dpi"] = 300
+
+    # Monkey-patch our Axes class so + and / do special things
+    Axes.__add__ = _add_axes
+    Axes.__truediv__ = _truediv_axes
+
+    _, ax1 = plt.subplots()
     ax1.set_facecolor("#fb4040")
     ax1.plot([1, 2, 3], [1, 2, 3])
 
-    _, ax2 = plt.subplots(dpi=300)
+    _, ax2 = plt.subplots()
     ax2.scatter([1, 2, 3], [3, 2, 1])
 
-    _, ax3 = plt.subplots(dpi=300)
-    ax3.bar(["Jo", "Mat", "Lo"], [1, 2, 3])
+    _, ax3 = plt.subplots()
+    ax3.bar(["A", "B", "C"], [1, 2, 3])
 
-    (ax1 + ax2) / ax3
+    # ax1 + ax2
+    # plt.savefig("add.png")
 
-    fig = plt.gcf()
-    fig.savefig("test.png", dpi=300)
+    ax1 / ax2
+    plt.savefig("div.png")
+
+    # ax3 / (ax1 + ax2)
+    # (ax1 + ax2) / ax3
+    # plt.savefig("add_AND_div.png")

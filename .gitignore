@@ -4,3 +4,6 @@ venv/
 .DS_Store
 plotch.egg-info/
 *cache*/
+.idea/
+*.png
+!img/*.png
