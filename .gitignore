@@ -7,3 +7,4 @@ plotch.egg-info/
 .idea/
 *.png
 !img/*.png
+sandbox.*

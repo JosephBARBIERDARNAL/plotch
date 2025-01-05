@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 
+from .config import Params
+
 
 def _fig2rgb_array(fig):
     fig.canvas.draw()
@@ -15,7 +17,8 @@ def _add_axes(self, other):
     self.figure.set_facecolor(plt.gcf().get_facecolor())
     other.figure.set_facecolor(plt.gcf().get_facecolor())
 
-    fig = plt.figure(figsize=(10, 6))
+    figsize = Params["plus_figsize"]
+    fig = plt.figure(figsize=figsize)
 
     ax_left = fig.add_axes([0.0, 0.0, 0.5, 1.0])
     ax_right = fig.add_axes([0.5, 0.0, 0.5, 1.0])
@@ -42,7 +45,8 @@ def _truediv_axes(self, other):
     self.figure.set_facecolor(plt.gcf().get_facecolor())
     other.figure.set_facecolor(plt.gcf().get_facecolor())
 
-    fig = plt.figure(figsize=(8, 10))
+    figsize = Params["div_figsize"]
+    fig = plt.figure(figsize=figsize)
 
     ax_top = fig.add_axes([0.0, 0.5, 1.0, 0.5])
     ax_bottom = fig.add_axes([0.0, 0.0, 1.0, 0.5])
